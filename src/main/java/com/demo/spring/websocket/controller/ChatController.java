@@ -22,7 +22,7 @@ public class ChatController {
     @MessageMapping("/country")
     @SendTo("/channel/country")
     public String countryChat(String content) {
-        String date = new Date().toGMTString();
+        String date = new Date().toString();
         return String.format("[%s]%s", date, content);
     }
 }
