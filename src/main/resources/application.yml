@@ -2,5 +2,11 @@
 
 server:
     address: 0.0.0.0
-    port: 80
+    port: 443
     contextPath: /
+    ssl:
+        enabled: true
+        key-alias: pdf
+        key-store: classpath:pdf.jks
+        key-store-password: key.yeyu456.com
+        key-password: pdf.yeyu456.com

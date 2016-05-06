@@ -1,4 +1,4 @@
-package com.demo.spring.websocket.debug;
+package com.demo.spring.websocket.auth.controller;
 
 import javax.servlet.http.HttpSession;
 
@@ -34,5 +34,4 @@ public class StompInterceptors extends HttpSessionHandshakeInterceptor {
         }
         super.afterHandshake(request, response, wsHandler, ex);
     }
-
 }

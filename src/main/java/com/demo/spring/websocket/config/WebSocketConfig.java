@@ -10,7 +10,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
-import com.demo.spring.websocket.debug.StompInterceptors;
+import com.demo.spring.websocket.auth.controller.StompInterceptors;
 
 @SpringBootApplication
 @EnableWebSocketMessageBroker

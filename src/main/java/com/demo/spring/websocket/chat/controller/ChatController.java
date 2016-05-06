@@ -1,10 +1,11 @@
-package com.demo.spring.websocket.controller;
+package com.demo.spring.websocket.chat.controller;
 
-import java.util.Date;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
+
+import com.demo.spring.websocket.chat.service.ChatService;
 
 /**<p>类描述：类</p>
  * <pre>
@@ -19,10 +20,12 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ChatController {
 
+    @Autowired
+    private ChatService chatService;
+
     @MessageMapping("/country")
     @SendTo("/channel/country")
     public String countryChat(String content) {
-        String date = new Date().toString();
-        return String.format("[%s]%s", date, content);
+        return this.chatService.doChat(content);
     }
 }

@@ -1,9 +1,9 @@
 package com.demo.spring.websocket.auth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.demo.spring.websocket.auth.domain.Account;
 import com.demo.spring.websocket.auth.domain.AuthResult;
@@ -25,12 +25,10 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @MessageMapping("/auth")
+    @RequestMapping("/auth")
     public AuthResult doAuth(@Payload Account account) {
         AuthResult result = new AuthResult();
-        if (!this.authService.doAuth(account)) {
-            result.setSuccess(false);
-        }
+        this.authService.doAuth(account, result);
         return result;
     }
 }
