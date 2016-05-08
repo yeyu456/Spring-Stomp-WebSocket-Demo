@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
-import com.demo.spring.websocket.auth.controller.AuthInterceptor;
-
 /**<p>类描述：类</p>
  * <pre>
  * 改动说明：
@@ -24,7 +22,6 @@ public class WebMvcConfig extends WebMvcAutoConfigurationAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
-        registry.addInterceptor(new AuthInterceptor());
     }
 
 }

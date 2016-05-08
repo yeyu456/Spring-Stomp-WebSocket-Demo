@@ -1,9 +1,12 @@
 package com.demo.spring.websocket.auth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.demo.spring.websocket.auth.domain.Account;
 import com.demo.spring.websocket.auth.domain.AuthResult;
@@ -20,15 +23,20 @@ import com.demo.spring.websocket.auth.service.AuthService;
  * @since 2016年5月2日 下午3:57:51
  */
 @Controller
+@SessionAttributes(value = "account")
 public class AuthController {
     
     @Autowired
     private AuthService authService;
 
-    @RequestMapping("/auth")
-    public AuthResult doAuth(@Payload Account account) {
+    @MessageMapping("/auth")
+    @SendToUser(value = "/errors", broadcast = false)
+    public AuthResult doAuth(@Payload("account") Account account, Model model) {
         AuthResult result = new AuthResult();
         this.authService.doAuth(account, result);
+        if (result.isSuccess()) {
+            model.addAttribute("account", account);
+        }
         return result;
     }
 }

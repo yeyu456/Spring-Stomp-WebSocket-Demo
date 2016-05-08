@@ -1,4 +1,4 @@
-package com.demo.spring.websocket.auth.controller;
+package com.demo.spring.websocket.auth.interceptor;
 
 import javax.servlet.http.HttpSession;
 

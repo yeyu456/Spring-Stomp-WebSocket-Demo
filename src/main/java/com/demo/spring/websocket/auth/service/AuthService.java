@@ -1,6 +1,10 @@
 package com.demo.spring.websocket.auth.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.demo.spring.websocket.auth.domain.Account;
 import com.demo.spring.websocket.auth.domain.AuthResult;
@@ -18,6 +22,8 @@ import com.demo.spring.websocket.auth.domain.AuthResult;
 @Service
 public class AuthService {
 
+    private static Map<String, String> LOGIN_SESSIONS = new HashMap<String, String>();
+
     public void doAuth(Account account, AuthResult result) {
         if (account == null) {
             result.setSuccess(false);
@@ -31,5 +37,28 @@ public class AuthService {
                 result.setErrMsg("Error user with password.");
             }
         }
+    }
+
+    public boolean isLogin(Account account, String sessionId) {
+        if ((account == null) || StringUtils.isEmpty(sessionId)) {
+            return false;
+        }
+        if (!LOGIN_SESSIONS.containsKey(account.getUser())) {
+            LOGIN_SESSIONS.put(account.getUser(), sessionId);
+            return true;
+
+        } else {
+            if (LOGIN_SESSIONS.get(account.getUser()).equals(sessionId)) {
+                return true;
+
+            } else {
+                System.out.println("账号异地登陆.");
+                return false;
+            }
+        }
+    }
+
+    public void clearLogin(Account account) {
+        LOGIN_SESSIONS.remove(account.getUser());
     }
 }
