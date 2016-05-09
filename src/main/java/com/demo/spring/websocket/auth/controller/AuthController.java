@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.demo.spring.websocket.auth.domain.Account;
@@ -31,11 +31,12 @@ public class AuthController {
 
     @MessageMapping("/auth")
     @SendToUser(value = "/errors", broadcast = false)
-    public AuthResult doAuth(@Payload("account") Account account, Model model) {
+    public AuthResult doAuth(@Payload Account account,
+            StompHeaderAccessor accessor) {
         AuthResult result = new AuthResult();
-        this.authService.doAuth(account, result);
+        this.authService.doAuth(account, result, accessor.getSessionId());
         if (result.isSuccess()) {
-            model.addAttribute("account", account);
+            accessor.getSessionAttributes().put("account", account);
         }
         return result;
     }

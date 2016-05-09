@@ -2,9 +2,15 @@ package com.demo.spring.websocket.chat.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
+import com.demo.spring.websocket.auth.domain.Account;
+import com.demo.spring.websocket.auth.exception.MultipleAuthException;
+import com.demo.spring.websocket.auth.exception.UnAuthException;
+import com.demo.spring.websocket.auth.service.AuthService;
 import com.demo.spring.websocket.chat.service.ChatService;
 
 /**<p>类描述：类</p>
@@ -23,9 +29,21 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
+    @Autowired
+    private AuthService authService;
+
     @MessageMapping("/country")
     @SendTo("/channel/country")
-    public String countryChat(String content) {
+    public String countryChat(@Payload String content,
+            SimpMessageHeaderAccessor accessor) {
+        Object account = accessor.getSessionAttributes().get("account");
+        if ((account == null) || (!(account instanceof Account))) {
+            throw new UnAuthException();
+
+        } else if (!this.authService.isLogin((Account) account,
+            accessor.getSessionId())) {
+            throw new MultipleAuthException();
+        }
         return this.chatService.doChat(content);
     }
 }

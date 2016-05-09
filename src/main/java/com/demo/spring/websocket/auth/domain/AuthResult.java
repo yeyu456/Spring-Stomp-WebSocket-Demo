@@ -14,6 +14,7 @@ public class AuthResult {
 
     private boolean isSuccess;
     private String errMsg;
+    private int errorType;
 
     /**
      * <p>方法描述：获取isSuccess的方法</p>
@@ -61,5 +62,29 @@ public class AuthResult {
      */
     public void setErrMsg(String errMsg) {
         this.errMsg = errMsg;
+    }
+
+    /**
+     * <p>方法描述：获取errorType的方法</p>
+     * <pre>
+     * 改动说明：
+     *      【修改人：叶子璀 / 2016年5月9日 上午9:48:29 / 版本：1.0】
+     * </pre>
+     * @return 返回errorType
+     */
+    public int getErrorType() {
+        return this.errorType;
+    }
+
+    /**
+     * <p>方法描述：设置errorType的方法</p>
+     * <pre>
+     * 改动说明：
+     *      【修改人：叶子璀 / 2016年5月9日 上午9:48:29 / 版本：1.0】
+     * </pre>
+     * @param errorType 需要设置的errorType
+     */
+    public void setErrorType(int errorType) {
+        this.errorType = errorType;
     }
 }

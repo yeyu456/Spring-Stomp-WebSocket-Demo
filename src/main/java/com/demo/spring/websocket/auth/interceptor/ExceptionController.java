@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import com.demo.spring.websocket.auth.domain.AuthResult;
+import com.demo.spring.websocket.auth.enums.ErrorType;
 import com.demo.spring.websocket.auth.exception.MultipleAuthException;
 import com.demo.spring.websocket.auth.exception.UnAuthException;
 
@@ -27,6 +28,7 @@ public class ExceptionController {
         AuthResult result = new AuthResult();
         result.setSuccess(false);
         result.setErrMsg("Not login.");
+        result.setErrorType(ErrorType.UnAuth.ordinal());
         return result;
     }
 
@@ -36,6 +38,7 @@ public class ExceptionController {
         AuthResult result = new AuthResult();
         result.setSuccess(false);
         result.setErrMsg("Another login.");
+        result.setErrorType(ErrorType.MultiAuth.ordinal());
         return result;
     }
 }

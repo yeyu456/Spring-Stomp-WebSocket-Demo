@@ -3,11 +3,13 @@ package com.demo.spring.websocket.auth.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.demo.spring.websocket.auth.domain.Account;
 import com.demo.spring.websocket.auth.domain.AuthResult;
+import com.demo.spring.websocket.auth.enums.ErrorType;
 
 /**<p>类描述：类</p>
  * <pre>
@@ -23,8 +25,13 @@ import com.demo.spring.websocket.auth.domain.AuthResult;
 public class AuthService {
 
     private static Map<String, String> LOGIN_SESSIONS = new HashMap<String, String>();
+    private static int count = 0;
+    private static int MAX_COUNT = 3;
 
-    public void doAuth(Account account, AuthResult result) {
+    @Autowired
+    private LockService lockService;
+
+    public void doAuth(Account account, AuthResult result, String sessionId) {
         if (account == null) {
             result.setSuccess(false);
             result.setErrMsg("No valid account data.");
@@ -32,9 +39,19 @@ public class AuthService {
             if (account.getUser().equals("test")
                     && account.getPassword().equals("111")) {
                 result.setSuccess(true);
+                String oldSessionId = LOGIN_SESSIONS.get(account.getUser());
+                if ((oldSessionId != null) && !oldSessionId.equals(sessionId)) {
+                    count++;
+                }
+                if (count > MAX_COUNT) {
+                    this.lockService.lock(account);
+                }
+                LOGIN_SESSIONS.put(account.getUser(), sessionId);
+
             } else {
                 result.setSuccess(false);
                 result.setErrMsg("Error user with password.");
+                result.setErrorType(ErrorType.InvalidAuth.ordinal());
             }
         }
     }

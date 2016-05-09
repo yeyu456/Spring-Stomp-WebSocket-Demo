@@ -34,6 +34,8 @@ public class DisconnectListener implements
         if ((account != null) && (account instanceof Account)) {
             this.authService.clearLogin((Account) account);
             System.out.println("销毁账号：" + ((Account) account).getUser());
+        } else {
+            System.out.println("会话掉线：" + headers.getSessionId());
         }
     }
 

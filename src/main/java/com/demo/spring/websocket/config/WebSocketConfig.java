@@ -31,6 +31,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         interceptor.setCopyHttpSessionId(true);
         interceptor.setCreateSession(false);*/
         registry.addEndpoint("/demo").setAllowedOrigins(
-            "*").withSockJS().setTransportHandlers(handlers);
+            "*").withSockJS().setDisconnectDelay(1000).setHeartbeatTime(1000);
     }
 }

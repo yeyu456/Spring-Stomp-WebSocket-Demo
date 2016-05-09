@@ -19,6 +19,6 @@ public class ChatService {
 
     public String doChat(String content) {
         String date = new Date().toString();
-        return String.format("[%s]%s", date, content);
+        return String.format("[%s]%s", date, content.toString());
     }
 }
